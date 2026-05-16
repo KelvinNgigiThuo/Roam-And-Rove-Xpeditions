@@ -18,11 +18,17 @@ class ExpenseType(models.Model):
         return self.name
 
 class Expense(models.Model):
+    PAYMENT_METHODS = (
+        ('CASH', 'Cash'),
+        ('CARD', 'Card'),
+        ('MPESA', 'MPESA'),
+    )
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    expense_type = models.ForeignKey(ExpenseType, on_delete=models.CASCADE, related_name='expenses')
+    expense_type = models.ForeignKey(ExpenseType, on_delete=models.SET_NULL, null=True, related_name='expenses')
     task = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True, blank=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_expenses')
     description = models.TextField(blank=True)
+    payment_method = models.CharField(max_length=20, blank=True, choices=PAYMENT_METHODS, default='CASH')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
