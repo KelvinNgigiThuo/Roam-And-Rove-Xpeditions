@@ -21,9 +21,19 @@ staticfiles/
 # IDEs
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # OS files
 .DS_Store
+Thumbs.db
+
+# ===== REACT =====
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
 
 # Migrations (optional rule)
 # If you want clean repos per dev workflow:
