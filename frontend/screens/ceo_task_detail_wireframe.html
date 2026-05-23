@@ -1,0 +1,69 @@
+<style>
+  .phone{width:320px;margin:0 auto;background:var(--color-background-primary);border:1px solid var(--color-border-secondary);border-radius:32px;overflow:hidden;font-size:14px}
+  .topbar{background:var(--color-background-secondary);padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .topbar-title{font-size:15px;font-weight:500;color:var(--color-text-primary);flex:1;text-align:center}
+  .back{color:var(--color-text-secondary);font-size:13px;display:flex;align-items:center;gap:4px;cursor:pointer}
+  .body{padding:16px}
+  .title-hero{padding-bottom:14px;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:16px}
+  .task-title{font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+  .task-date{font-size:12px;color:var(--color-text-tertiary)}
+  .detail-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .detail-label{font-size:12px;color:var(--color-text-secondary);padding-top:1px}
+  .detail-value{font-size:13px;color:var(--color-text-primary);font-weight:500;text-align:right;max-width:180px}
+  .detail-value.muted{font-weight:400;color:var(--color-text-secondary)}
+  .assigned-badge{font-size:12px;padding:3px 10px;border-radius:20px;background:#E6F1FB;color:#0C447C;font-weight:500}
+  .unassigned-badge{font-size:12px;padding:3px 10px;border-radius:20px;background:#F1EFE8;color:#5F5E5A;font-weight:500}
+  .description-block{padding:12px 0;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:4px}
+  .desc-label{font-size:12px;color:var(--color-text-secondary);margin-bottom:6px}
+  .desc-text{font-size:13px;color:var(--color-text-primary);line-height:1.6}
+  .actions{margin-top:20px;display:flex;flex-direction:column;gap:8px}
+  .edit-btn{width:100%;padding:11px;background:#1D9E75;color:#fff;border:none;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+  .reassign-btn{width:100%;padding:11px;background:var(--color-background-primary);color:#0C447C;border:0.5px solid #85B7EB;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+  .delete-btn{width:100%;padding:11px;background:var(--color-background-primary);color:var(--color-text-danger);border:0.5px solid var(--color-border-danger);border-radius:var(--border-radius-md);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+  .view-only-note{font-size:11px;color:var(--color-text-tertiary);text-align:center;margin-top:12px}
+</style>
+<h2 class="sr-only">CEO task detail screen wireframe</h2>
+<div class="phone">
+  <div style="background:#1D9E75;padding:10px 16px 8px;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-size:13px;color:#E1F5EE">Roam & Rove</span>
+    <span style="font-size:12px;color:#9FE1CB">Sarah Wanjiku</span>
+  </div>
+  <div class="topbar">
+    <span class="back"><i class="ti ti-arrow-left" style="font-size:16px" aria-hidden="true"></i> Back</span>
+    <span class="topbar-title">Task detail</span>
+    <span style="width:40px"></span>
+  </div>
+  <div class="body">
+    <div class="title-hero">
+      <div class="task-title">Nairobi airport pickup</div>
+      <div class="task-date">Created 18 May 2026</div>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Assigned to</span>
+      <span class="assigned-badge">James Kamau</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Created by</span>
+      <span class="detail-value">Sarah Wanjiku</span>
+    </div>
+    <div class="description-block">
+      <div class="desc-label">Description</div>
+      <div class="desc-text">Pick up Mr. Omondi at JKIA terminal 1A, flight KQ101 arriving 14:30. Confirm with client one hour before departure. Return to Westlands office after drop off.</div>
+    </div>
+    <div class="actions">
+      <button class="edit-btn">
+        <i class="ti ti-edit" style="font-size:16px" aria-hidden="true"></i>
+        Edit task
+      </button>
+      <button class="reassign-btn">
+        <i class="ti ti-user" style="font-size:16px" aria-hidden="true"></i>
+        Reassign to another driver
+      </button>
+      <button class="delete-btn">
+        <i class="ti ti-trash" style="font-size:16px" aria-hidden="true"></i>
+        Delete task
+      </button>
+    </div>
+    <div class="view-only-note">Edit and delete only available for tasks you created</div>
+  </div>
+</div>

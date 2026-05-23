@@ -1,0 +1,142 @@
+<style>
+  .phone{width:320px;margin:0 auto;background:var(--color-background-primary);border:1px solid var(--color-border-secondary);border-radius:32px;overflow:hidden;font-size:14px}
+  .topbar{background:var(--color-background-secondary);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .body{padding:14px}
+  .greeting{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+  .subgreeting{font-size:12px;color:var(--color-text-tertiary);margin-bottom:16px}
+  .metrics-large{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+  .metrics-small{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+  .metric-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px}
+  .metric-card.accent{background:#E1F5EE}
+  .metric-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px}
+  .metric-label.accent{color:#085041}
+  .metric-value{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+  .metric-value.accent{color:#085041}
+  .metric-value.small{font-size:15px}
+  .metric-sub{font-size:11px;color:var(--color-text-tertiary);margin-top:2px}
+  .metric-sub.accent{color:#0F6E56}
+  .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .section-title{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+  .see-all{font-size:12px;color:#1D9E75;cursor:pointer}
+  .expense-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .expense-row:last-child{border-bottom:none}
+  .row-left{}
+  .row-type{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+  .row-driver{font-size:11px;color:var(--color-text-tertiary);margin-top:1px}
+  .row-amount{font-size:13px;font-weight:500;color:#085041}
+  .task-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .task-row:last-child{border-bottom:none}
+  .task-name{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+  .task-driver{font-size:11px;color:var(--color-text-tertiary);margin-top:1px}
+  .unassigned-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#F1EFE8;color:#5F5E5A;font-weight:500}
+  .assigned-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#E6F1FB;color:#0C447C;font-weight:500}
+  .recent-block{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:4px 12px;margin-bottom:16px}
+  .bottomnav{display:flex;justify-content:space-around;padding:10px 0 12px;border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)}
+  .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--color-text-tertiary);cursor:pointer}
+  .nav-item.active{color:#1D9E75}
+</style>
+<h2 class="sr-only">CEO dashboard wireframe</h2>
+<div class="phone">
+  <div style="background:#1D9E75;padding:10px 16px 8px;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-size:13px;color:#E1F5EE">Roam & Rove</span>
+    <span style="font-size:12px;color:#9FE1CB">Sarah Wanjiku</span>
+  </div>
+  <div class="body">
+    <div class="greeting">Good morning, Sarah</div>
+    <div class="subgreeting">Monday, 18 May 2026</div>
+    <div class="metrics-large">
+      <div class="metric-card accent">
+        <div class="metric-label accent">This month</div>
+        <div class="metric-value accent">KES 48,200</div>
+        <div class="metric-sub accent">24 expenses</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">This week</div>
+        <div class="metric-value">KES 12,700</div>
+        <div class="metric-sub">6 expenses</div>
+      </div>
+    </div>
+    <div class="metrics-small">
+      <div class="metric-card">
+        <div class="metric-label">Today</div>
+        <div class="metric-value small">KES 5,200</div>
+        <div class="metric-sub">3 entries</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Drivers</div>
+        <div class="metric-value small">3</div>
+        <div class="metric-sub">active</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Tasks</div>
+        <div class="metric-value small">5</div>
+        <div class="metric-sub">open</div>
+      </div>
+    </div>
+    <div class="section-header">
+      <span class="section-title">Recent expenses</span>
+      <span class="see-all">See all</span>
+    </div>
+    <div class="recent-block">
+      <div class="expense-row">
+        <div class="row-left">
+          <div class="row-type">Fuel</div>
+          <div class="row-driver">James Kamau · 18 May</div>
+        </div>
+        <div class="row-amount">KES 3,500</div>
+      </div>
+      <div class="expense-row">
+        <div class="row-left">
+          <div class="row-type">Maintenance</div>
+          <div class="row-driver">Peter Mwangi · 18 May</div>
+        </div>
+        <div class="row-amount">KES 4,200</div>
+      </div>
+      <div class="expense-row">
+        <div class="row-left">
+          <div class="row-type">Parking</div>
+          <div class="row-driver">Alice Njeri · 17 May</div>
+        </div>
+        <div class="row-amount">KES 300</div>
+      </div>
+    </div>
+    <div class="section-header">
+      <span class="section-title">Recent tasks</span>
+      <span class="see-all">See all</span>
+    </div>
+    <div class="recent-block">
+      <div class="task-row">
+        <div class="row-left">
+          <div class="task-name">Nairobi airport pickup</div>
+          <div class="task-driver">18 May 2026</div>
+        </div>
+        <span class="assigned-badge">James</span>
+      </div>
+      <div class="task-row">
+        <div class="row-left">
+          <div class="task-name">Karen corporate pickup</div>
+          <div class="task-driver">16 May 2026</div>
+        </div>
+        <span class="unassigned-badge">Unassigned</span>
+      </div>
+    </div>
+  </div>
+  <div class="bottomnav">
+    <div class="nav-item active">
+      <i class="ti ti-home" style="font-size:20px" aria-hidden="true"></i>
+      Home
+    </div>
+    <div class="nav-item">
+      <i class="ti ti-receipt" style="font-size:20px" aria-hidden="true"></i>
+      Expenses
+    </div>
+    <div class="nav-item">
+      <i class="ti ti-clipboard-list" style="font-size:20px" aria-hidden="true"></i>
+      Tasks
+    </div>
+    <div class="nav-item">
+      <i class="ti ti-logout" style="font-size:20px" aria-hidden="true"></i>
+      Logout
+    </div>
+  </div>
+</div>

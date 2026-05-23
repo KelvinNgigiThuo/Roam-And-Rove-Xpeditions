@@ -1,0 +1,110 @@
+<style>
+  .phone{width:320px;margin:0 auto;background:var(--color-background-primary);border:1px solid var(--color-border-secondary);border-radius:32px;overflow:hidden;font-size:14px}
+  .topbar{background:var(--color-background-secondary);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .body{padding:14px}
+  .greeting{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+  .subgreeting{font-size:12px;color:var(--color-text-tertiary);margin-bottom:16px}
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  .metric-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px}
+  .metric-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px}
+  .metric-value{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+  .metric-sub{font-size:11px;color:var(--color-text-tertiary);margin-top:2px}
+  .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+  .action-btn{padding:11px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;font-weight:500;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-primary);display:flex;align-items:center;justify-content:center;gap:6px}
+  .action-btn.primary{background:#1D9E75;color:#fff;border-color:#1D9E75}
+  .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .section-title{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+  .see-all{font-size:12px;color:#1D9E75;cursor:pointer}
+  .recent-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center}
+  .recent-left{}
+  .recent-type{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+  .recent-date{font-size:11px;color:var(--color-text-tertiary);margin-top:2px}
+  .recent-amount{font-size:14px;font-weight:500;color:#085041}
+  .task-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:7px}
+  .task-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+  .task-desc{font-size:11px;color:var(--color-text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bottomnav{display:flex;justify-content:space-around;padding:10px 0 12px;border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)}
+  .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--color-text-tertiary);cursor:pointer}
+  .nav-item.active{color:#1D9E75}
+</style>
+<h2 class="sr-only">Driver dashboard wireframe</h2>
+<div class="phone">
+  <div style="background:#1D9E75;padding:10px 16px 8px;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-size:13px;color:#E1F5EE">Roam & Rove</span>
+    <span style="font-size:12px;color:#9FE1CB">James Kamau</span>
+  </div>
+  <div class="body">
+    <div class="greeting">Good morning, James</div>
+    <div class="subgreeting">Monday, 18 May 2026</div>
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="metric-label">Today's expenses</div>
+        <div class="metric-value">KES 3,700</div>
+        <div class="metric-sub">2 entries</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">This month</div>
+        <div class="metric-value">KES 12,450</div>
+        <div class="metric-sub">8 entries</div>
+      </div>
+    </div>
+    <div class="quick-actions">
+      <button class="action-btn primary">
+        <i class="ti ti-plus" style="font-size:15px" aria-hidden="true"></i>
+        Log expense
+      </button>
+      <button class="action-btn">
+        <i class="ti ti-list" style="font-size:15px" aria-hidden="true"></i>
+        My expenses
+      </button>
+    </div>
+    <div class="section-header">
+      <span class="section-title">Recent expenses</span>
+      <span class="see-all">See all</span>
+    </div>
+    <div class="recent-card">
+      <div class="recent-left">
+        <div class="recent-type">Fuel</div>
+        <div class="recent-date">18 May 2026</div>
+      </div>
+      <div class="recent-amount">KES 3,500</div>
+    </div>
+    <div class="recent-card">
+      <div class="recent-left">
+        <div class="recent-type">Parking</div>
+        <div class="recent-date">18 May 2026</div>
+      </div>
+      <div class="recent-amount">KES 200</div>
+    </div>
+    <div class="section-header" style="margin-top:14px">
+      <span class="section-title">My tasks</span>
+      <span class="see-all">See all</span>
+    </div>
+    <div class="task-card">
+      <div class="task-title">Nairobi airport pickup</div>
+      <div class="task-desc">Pick up Mr. Omondi at JKIA terminal 1A, flight KQ101</div>
+    </div>
+    <div class="task-card">
+      <div class="task-title">Mombasa road transfer</div>
+      <div class="task-desc">Drop off guests at Sarova Whitesands, depart by 06:00 AM</div>
+    </div>
+  </div>
+  <div class="bottomnav">
+    <div class="nav-item active">
+      <i class="ti ti-home" style="font-size:20px" aria-hidden="true"></i>
+      Home
+    </div>
+    <div class="nav-item">
+      <i class="ti ti-receipt" style="font-size:20px" aria-hidden="true"></i>
+      Expenses
+    </div>
+    <div class="nav-item">
+      <i class="ti ti-clipboard-list" style="font-size:20px" aria-hidden="true"></i>
+      Tasks
+    </div>
+    <div class="nav-item">
+      <i class="ti ti-logout" style="font-size:20px" aria-hidden="true"></i>
+      Logout
+    </div>
+  </div>
+</div>

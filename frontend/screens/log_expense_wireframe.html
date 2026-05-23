@@ -1,0 +1,70 @@
+<style>
+  .phone{width:320px;margin:0 auto;background:var(--color-background-primary);border:1px solid var(--color-border-secondary);border-radius:32px;overflow:hidden;font-size:14px}
+  .topbar{background:var(--color-background-secondary);padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .topbar-title{font-size:15px;font-weight:500;color:var(--color-text-primary);flex:1;text-align:center}
+  .back{color:var(--color-text-secondary);font-size:13px;display:flex;align-items:center;gap:4px;cursor:pointer}
+  .form-body{padding:16px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.04em}
+  .field input,.field select,.field textarea{width:100%;box-sizing:border-box;padding:9px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary)}
+  .field textarea{resize:none;height:72px}
+  .field .hint{font-size:11px;color:var(--color-text-tertiary);margin-top:4px}
+  .required-dot{color:var(--color-text-danger);margin-left:2px}
+  .payment-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+  .pay-btn{padding:8px 4px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;text-align:center;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-primary)}
+  .pay-btn.active{border-color:#1D9E75;background:#E1F5EE;color:#085041;font-weight:500}
+  .submit-btn{width:100%;padding:12px;background:#1D9E75;color:#fff;border:none;border-radius:var(--border-radius-md);font-size:15px;font-weight:500;cursor:pointer;margin-top:6px}
+  .optional-badge{font-size:10px;font-weight:400;color:var(--color-text-tertiary);margin-left:4px;text-transform:none;letter-spacing:0}
+</style>
+<h2 class="sr-only">Log expense screen wireframe for the driver role</h2>
+<div class="phone">
+  <div style="background:#1D9E75;padding:10px 16px 8px;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-size:13px;color:#E1F5EE">Roam & Rove</span>
+    <span style="font-size:12px;color:#9FE1CB">James Kamau</span>
+  </div>
+  <div class="topbar">
+    <span class="back"><i class="ti ti-arrow-left" style="font-size:16px" aria-hidden="true"></i> Back</span>
+    <span class="topbar-title">Log expense</span>
+    <span style="width:40px"></span>
+  </div>
+  <div class="form-body">
+    <div class="field">
+      <label>Amount (KES)<span class="required-dot">*</span></label>
+      <input type="number" placeholder="0.00"/>
+    </div>
+    <div class="field">
+      <label>Expense type<span class="required-dot">*</span></label>
+      <select>
+        <option>Select type...</option>
+        <option>Fuel</option>
+        <option>Parking</option>
+        <option>Maintenance</option>
+        <option>Meals</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Payment method<span class="required-dot">*</span></label>
+      <div class="payment-grid">
+        <div class="pay-btn active">M-Pesa</div>
+        <div class="pay-btn">Cash</div>
+        <div class="pay-btn">Card</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Linked task <span class="optional-badge">(optional)</span></label>
+      <select>
+        <option>No task linked</option>
+        <option>Nairobi airport run</option>
+        <option>Mombasa road trip</option>
+      </select>
+      <div class="hint">Link this expense to a specific job or trip</div>
+    </div>
+    <div class="field">
+      <label>Description <span class="optional-badge">(optional)</span></label>
+      <textarea placeholder="Add any notes about this expense..."></textarea>
+    </div>
+    <button class="submit-btn">Submit expense</button>
+    <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">You will be taken to your expenses list</div>
+  </div>
+</div>

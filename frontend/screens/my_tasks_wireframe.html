@@ -1,0 +1,66 @@
+<style>
+  .phone{width:320px;margin:0 auto;background:var(--color-background-primary);border:1px solid var(--color-border-secondary);border-radius:32px;overflow:hidden;font-size:14px}
+  .topbar{background:var(--color-background-secondary);padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .topbar-title{font-size:15px;font-weight:500;color:var(--color-text-primary);flex:1;text-align:center}
+  .body{padding:12px 14px}
+  .fab{width:100%;padding:11px;background:#1D9E75;color:#fff;border:none;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:6px}
+  .task-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:11px 13px;margin-bottom:8px;cursor:pointer}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
+  .task-title{font-size:14px;font-weight:500;color:var(--color-text-primary);flex:1;margin-right:8px}
+  .task-date{font-size:11px;color:var(--color-text-tertiary);white-space:nowrap}
+  .task-desc{font-size:12px;color:var(--color-text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:6px}
+  .card-bottom{display:flex;justify-content:flex-end}
+  .own-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:#E1F5EE;color:#085041;font-weight:500}
+</style>
+<h2 class="sr-only">My tasks list screen wireframe for the driver role</h2>
+<div class="phone">
+  <div style="background:#1D9E75;padding:10px 16px 8px;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-size:13px;color:#E1F5EE">Roam & Rove</span>
+    <span style="font-size:12px;color:#9FE1CB">James Kamau</span>
+  </div>
+  <div class="topbar">
+    <span style="width:40px"></span>
+    <span class="topbar-title">My tasks</span>
+    <span style="width:40px"></span>
+  </div>
+  <div class="body">
+    <button class="fab">
+      <i class="ti ti-plus" style="font-size:16px" aria-hidden="true"></i>
+      Create new task
+    </button>
+    <div class="task-card">
+      <div class="card-top">
+        <span class="task-title">Nairobi airport pickup</span>
+        <span class="task-date">18 May 2026</span>
+      </div>
+      <div class="task-desc">Pick up Mr. Omondi at JKIA terminal 1A, flight KQ101 arriving 14:30</div>
+      <div class="card-bottom"></div>
+    </div>
+    <div class="task-card">
+      <div class="card-top">
+        <span class="task-title">Mombasa road transfer</span>
+        <span class="task-date">17 May 2026</span>
+      </div>
+      <div class="task-desc">Drop off guests at Sarova Whitesands, depart Nairobi by 06:00 AM</div>
+      <div class="card-bottom"></div>
+    </div>
+    <div class="task-card">
+      <div class="card-top">
+        <span class="task-title">Vehicle service reminder</span>
+        <span class="task-date">16 May 2026</span>
+      </div>
+      <div class="task-desc">Book car in for 10,000km service at Thika road garage</div>
+      <div class="card-bottom">
+        <span class="own-badge">My task</span>
+      </div>
+    </div>
+    <div class="task-card">
+      <div class="card-top">
+        <span class="task-title">Karen corporate pickup</span>
+        <span class="task-date">15 May 2026</span>
+      </div>
+      <div class="task-desc">Collect three passengers from ABC Place office park at 17:00</div>
+      <div class="card-bottom"></div>
+    </div>
+  </div>
+</div>
