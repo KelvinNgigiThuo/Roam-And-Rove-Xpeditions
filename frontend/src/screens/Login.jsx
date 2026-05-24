@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import api from '../api/axios'
+import logo from '../assets/RnR_Logo.jpeg'
 
 function Login() {
   const [username, setUsername] = useState('')
@@ -44,8 +45,11 @@ function Login() {
   return (
     <div style={styles.container}>
       <div style={styles.logoArea}>
-        <div style={styles.brandName}>ROAM AND ROVE{'\n'}XPEDITIONS</div>
-        <div style={styles.tagline}>Travel Beyond Ordinary</div>
+        <img
+          src={logo}
+          alt="Roam and Rove Xpeditions"
+          style={styles.logoImage}
+        />
       </div>
 
       <div style={styles.formArea}>
@@ -113,27 +117,18 @@ const styles = {
     background: '#ffffff',
   },
   logoArea: {
-    background: '#0a0a0a',
-    padding: '48px 24px 36px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '8px',
-  },
-  brandName: {
-    fontSize: '20px',
-    fontWeight: '700',
-    color: '#E8A020',
-    letterSpacing: '0.05em',
-    textAlign: 'center',
-    whiteSpace: 'pre-line',
-    lineHeight: '1.4',
-  },
-  tagline: {
-    fontSize: '12px',
-    color: '#888',
-    fontStyle: 'italic',
-  },
+  background: '#0a0a0a',
+  height: '380px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'flex-start',
+  overflow: 'hidden',
+},
+logoImage: {
+  width: '400px',
+  height: 'auto',
+  display: 'block',
+},
   formArea: {
     padding: '32px 24px',
     flex: 1,
