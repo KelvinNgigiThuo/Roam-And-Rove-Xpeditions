@@ -71,6 +71,13 @@ function CEOExpenses() {
           <div style={styles.summaryCount}>{filtered.length} expenses</div>
         </div>
 
+        <button
+          style={styles.logBtn}
+          onClick={() => navigate('/ceo/expenses/log')}
+        >
+          + Log expense
+        </button>
+
         <div style={styles.filters}>
           <div style={styles.filterRow}>
             <select
@@ -176,6 +183,12 @@ const styles = {
   summaryLabel: { fontSize: '12px', color: '#888' },
   summaryAmount: { fontSize: '18px', fontWeight: '500', color: '#1a1a1a' },
   summaryCount: { fontSize: '12px', color: '#aaa' },
+    logBtn: {
+      width: '100%', padding: '11px', background: '#1D9E75',
+      color: '#ffffff', border: 'none', borderRadius: '8px',
+      fontSize: '14px', fontWeight: '500', cursor: 'pointer',
+      marginBottom: '12px',
+    },
   filters: { display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '12px' },
   filterRow: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' },
   select: {

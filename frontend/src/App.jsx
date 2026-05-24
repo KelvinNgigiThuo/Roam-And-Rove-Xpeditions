@@ -8,6 +8,14 @@ import CEOExpenseDetail from './pages/ceo/CEOExpenseDetail'
 import CEOTasks from './pages/ceo/CEOTasks'
 import CEOTaskDetail from './pages/ceo/CEOTaskDetail'
 import CEOTaskCreate from './pages/ceo/CEOTaskCreate'
+import CEOLogExpense from './pages/ceo/CEOLogExpense'
+import DriverDashboard from './pages/driver/DriverDashboard'
+import DriverExpenses from './pages/driver/DriverExpense'
+import DriverLogExpense from './pages/driver/DriverLogExpense'
+import DriverExpenseDetail from './pages/driver/DriverExpenseDetail'
+import DriverTasks from './pages/driver/DriverTasks'
+import DriverTaskDetail from './pages/driver/DriverTaskDetail'
+import DriverTaskCreate from './pages/driver/DriverTaskCreate'
 
 function App() {
   const { user } = useAuth()
@@ -38,6 +46,11 @@ function App() {
             <CEOExpenseDetail />
           </ProtectedRoute>
         } />
+        <Route path="/ceo/expenses/log" element={
+          <ProtectedRoute role="CEO">
+            <CEOLogExpense />
+          </ProtectedRoute>
+        } />
         <Route path="/ceo/tasks" element={
           <ProtectedRoute role="CEO">
             <CEOTasks />
@@ -56,7 +69,37 @@ function App() {
       
         <Route path="/driver/dashboard" element={
           <ProtectedRoute role="DRIVER">
-            <div>Driver Dashboard coming soon</div>
+            <DriverDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/driver/expenses" element={
+          <ProtectedRoute role="DRIVER">
+            <DriverExpenses />
+          </ProtectedRoute>
+        } />
+        <Route path="/driver/expenses/log" element={
+          <ProtectedRoute role="DRIVER">
+            <DriverLogExpense />
+          </ProtectedRoute>
+        } />
+        <Route path="/driver/expenses/:id" element={
+          <ProtectedRoute role="DRIVER">
+            <DriverExpenseDetail />
+          </ProtectedRoute>
+        } />
+        <Route path="/driver/tasks" element={
+          <ProtectedRoute role="DRIVER">
+            <DriverTasks />
+          </ProtectedRoute>
+        } />
+        <Route path="/driver/tasks/create" element={
+          <ProtectedRoute role="DRIVER">
+            <DriverTaskCreate />
+          </ProtectedRoute>
+        } />
+        <Route path="/driver/tasks/:id" element={
+          <ProtectedRoute role="DRIVER">
+            <DriverTaskDetail />
           </ProtectedRoute>
         } />
       </Routes>

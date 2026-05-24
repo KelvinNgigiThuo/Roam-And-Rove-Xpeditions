@@ -9,13 +9,13 @@ export function AuthProvider({ children }) {
     })
 
     const login = (userData, token) => {
-        localStorage.setItem('accesss_token', token);
+        localStorage.setItem('access_token', token);
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
     }
 
     const logout = () => {
-        localStorage.removeItem('accesss_token');
+        localStorage.removeItem('access_token');
         localStorage.removeItem('user');
         setUser(null);
     }
