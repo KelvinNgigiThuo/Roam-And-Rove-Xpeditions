@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../../api/axios'
 
@@ -6,8 +6,22 @@ function CEOTaskCreate() {
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [assignedTo, setAssignedTo] = useState('')
+  const [drivers, setDrivers] = useState([])
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    const fetchDrivers = async () => {
+      try {
+        const res = await api.get('/users/')
+        setDrivers(res.data.filter((u) => u.role === 'DRIVER'))
+      } catch (err) {
+        console.error('Failed to fetch drivers', err)
+      }
+    }
+    fetchDrivers()
+  }, [])
 
   const handleSubmit = async () => {
     if (!title.trim()) {
@@ -17,7 +31,11 @@ function CEOTaskCreate() {
     setSaving(true)
     setError('')
     try {
-      await api.post('/operations/tasks/', { title, description })
+      await api.post('/operations/tasks/', {
+        title,
+        description,
+        assigned_to: assignedTo || null,
+      })
       navigate('/ceo/tasks')
     } catch (err) {
       setError('Failed to create task. Please try again.')
@@ -45,7 +63,7 @@ function CEOTaskCreate() {
             style={styles.input}
             placeholder="Enter task title"
             value={title}
-            onChange={e => setTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
 
@@ -57,16 +75,35 @@ function CEOTaskCreate() {
             style={styles.textarea}
             placeholder="Add details about this task..."
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
-        <div style={styles.hint}>
-          You can assign this task to a driver after creating it.
+        <div style={styles.field}>
+          <label style={styles.label}>
+            Assign to <span style={styles.optional}>(optional)</span>
+          </label>
+          <select
+            style={styles.input}
+            value={assignedTo}
+            onChange={(e) => setAssignedTo(e.target.value)}
+          >
+            <option value="">Unassigned</option>
+            {drivers.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.username}
+              </option>
+            ))}
+          </select>
+          <div style={styles.hint}>
+            You can assign this task to a driver now or later.
+          </div>
         </div>
 
         <button
-          style={saving ? { ...styles.submitBtn, opacity: 0.7 } : styles.submitBtn}
+          style={
+            saving ? { ...styles.submitBtn, opacity: 0.7 } : styles.submitBtn
+          }
           onClick={handleSubmit}
           disabled={saving}
         >
@@ -80,46 +117,83 @@ function CEOTaskCreate() {
 const styles = {
   container: { minHeight: '100vh', background: '#f5f5f5' },
   header: {
-    background: '#1D9E75', padding: '10px 16px',
-    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+    background: '#1D9E75',
+    padding: '10px 16px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   backBtn: {
-    background: 'none', border: 'none',
-    color: '#E1F5EE', fontSize: '14px', cursor: 'pointer', padding: '0',
+    background: 'none',
+    border: 'none',
+    color: '#E1F5EE',
+    fontSize: '14px',
+    cursor: 'pointer',
+    padding: '0',
   },
   headerTitle: { fontSize: '15px', fontWeight: '500', color: '#ffffff' },
   body: { padding: '16px' },
   errorBox: {
-    background: '#fef2f2', border: '1px solid #fecaca',
-    color: '#dc2626', padding: '10px 14px',
-    borderRadius: '8px', fontSize: '13px', marginBottom: '16px',
+    background: '#fef2f2',
+    border: '1px solid #fecaca',
+    color: '#dc2626',
+    padding: '10px 14px',
+    borderRadius: '8px',
+    fontSize: '13px',
+    marginBottom: '16px',
   },
   field: { marginBottom: '18px' },
   label: {
-    display: 'block', fontSize: '12px', fontWeight: '600',
-    color: '#555', marginBottom: '6px',
-    textTransform: 'uppercase', letterSpacing: '0.04em',
+    display: 'block',
+    fontSize: '12px',
+    fontWeight: '600',
+    color: '#555',
+    marginBottom: '6px',
+    textTransform: 'uppercase',
+    letterSpacing: '0.04em',
   },
-  optional: { fontSize: '11px', color: '#aaa', textTransform: 'none', fontWeight: '400' },
+  optional: {
+    fontSize: '11px',
+    color: '#aaa',
+    textTransform: 'none',
+    fontWeight: '400',
+  },
   input: {
-    width: '100%', boxSizing: 'border-box',
-    padding: '10px 12px', border: '1px solid #e0e0e0',
-    borderRadius: '8px', fontSize: '14px', color: '#1a1a1a',
+    width: '100%',
+    boxSizing: 'border-box',
+    padding: '10px 12px',
+    border: '1px solid #e0e0e0',
+    borderRadius: '8px',
+    fontSize: '14px',
+    color: '#1a1a1a',
+    background: '#ffffff',
   },
   textarea: {
-    width: '100%', boxSizing: 'border-box',
-    padding: '10px 12px', border: '1px solid #e0e0e0',
-    borderRadius: '8px', fontSize: '14px', color: '#1a1a1a',
-    height: '120px', resize: 'none',
+    width: '100%',
+    boxSizing: 'border-box',
+    padding: '10px 12px',
+    border: '1px solid #e0e0e0',
+    borderRadius: '8px',
+    fontSize: '14px',
+    color: '#1a1a1a',
+    height: '120px',
+    resize: 'none',
   },
   hint: {
-    fontSize: '12px', color: '#aaa',
-    marginBottom: '20px', textAlign: 'center',
+    fontSize: '11px',
+    color: '#aaa',
+    marginTop: '5px',
   },
   submitBtn: {
-    width: '100%', padding: '13px', background: '#1D9E75',
-    color: '#ffffff', border: 'none', borderRadius: '8px',
-    fontSize: '15px', fontWeight: '500', cursor: 'pointer',
+    width: '100%',
+    padding: '13px',
+    background: '#1D9E75',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '15px',
+    fontWeight: '500',
+    cursor: 'pointer',
   },
 }
 

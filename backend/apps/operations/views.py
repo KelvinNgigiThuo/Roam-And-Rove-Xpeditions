@@ -26,8 +26,12 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 class ExpenseTypeViewSet(viewsets.ModelViewSet):
     serializer_class = ExpenseTypeSerializer
-    permission_classes = [permissions.IsAuthenticated]
     queryset = ExpenseType.objects.all()
+    
+    def get_permissions(self):
+        if self.action in [ 'create', 'update', 'partial_update', 'destroy']:
+            return [permissions.IsAuthenticated(), isCEO()]   
+        return [permissions.IsAuthenticated()]
 
 class ExpenseViewSet(viewsets.ModelViewSet):
     serializer_class = ExpenseSerializer

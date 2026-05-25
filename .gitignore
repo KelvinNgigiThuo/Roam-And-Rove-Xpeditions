@@ -19,7 +19,10 @@ staticfiles/
 .env
 
 # IDEs
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
 .idea/
 *.swp
 *.swo
@@ -34,8 +37,10 @@ frontend/dist/
 frontend/.env
 frontend/.env.local
 frontend/.env.production
+frontend/.vite/
 
-# Migrations (optional rule)
-# If you want clean repos per dev workflow:
-# */migrations/__pycache__/
-# */migrations/*.pyc
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

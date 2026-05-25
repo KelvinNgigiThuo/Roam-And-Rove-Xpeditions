@@ -9,6 +9,7 @@ import CEOTasks from './screens/ceo/CEOTasks'
 import CEOTaskDetail from './screens/ceo/CEOTaskDetail'
 import CEOTaskCreate from './screens/ceo/CEOTaskCreate'
 import CEOLogExpense from './screens/ceo/CEOLogExpense'
+import CEOExpenseTypes from './screens/ceo/CEOExpenseTypes'
 import DriverDashboard from './screens/driver/DriverDashboard'
 import DriverExpenses from './screens/driver/DriverExpense'
 import DriverLogExpense from './screens/driver/DriverLogExpense'
@@ -66,6 +67,12 @@ function App() {
             <CEOTaskDetail />
           </ProtectedRoute>
         } />
+        <Route path="/ceo/expense-types" element={
+          <ProtectedRoute role="CEO">
+            <CEOExpenseTypes />
+          </ProtectedRoute>
+        } />
+
       
         <Route path="/driver/dashboard" element={
           <ProtectedRoute role="DRIVER">

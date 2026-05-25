@@ -7,19 +7,46 @@ function CEOExpenseDetail() {
   const navigate = useNavigate()
   const [expense, setExpense] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [usersMap, setUsersMap] = useState({})
+  const [expenseTypesMap, setExpenseTypesMap] = useState({})
+  const [tasksMap, setTasksMap] = useState({})
 
   useEffect(() => {
-    const fetchExpense = async () => {
+    const fetchData = async () => {
       try {
-        const res = await api.get(`/operations/expenses/${id}/`)
-        setExpense(res.data)
+        const [expenseRes, usersRes, typesRes, tasksRes] = await Promise.all([
+          api.get(`/operations/expenses/${id}/`),
+          api.get('/users/'),
+          api.get('/operations/expense-types/'),
+          api.get('/operations/tasks/'),
+        ])
+
+        setExpense(expenseRes.data)
+
+        const uMap = {}
+        usersRes.data.forEach((u) => {
+          uMap[u.id] = u.username
+        })
+        setUsersMap(uMap)
+
+        const tMap = {}
+        typesRes.data.forEach((t) => {
+          tMap[t.id] = t.name
+        })
+        setExpenseTypesMap(tMap)
+
+        const tasksM = {}
+        tasksRes.data.forEach((t) => {
+          tasksM[t.id] = t.title
+        })
+        setTasksMap(tasksM)
       } catch (err) {
         console.error('Failed to fetch expense', err)
       } finally {
         setLoading(false)
       }
     }
-    fetchExpense()
+    fetchData()
   }, [id])
 
   const paymentColor = (method) => {
@@ -34,7 +61,10 @@ function CEOExpenseDetail() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <button style={styles.backBtn} onClick={() => navigate('/ceo/expenses')}>
+        <button
+          style={styles.backBtn}
+          onClick={() => navigate('/ceo/expenses')}
+        >
           ← Back
         </button>
         <span style={styles.headerTitle}>Expense detail</span>
@@ -48,9 +78,14 @@ function CEOExpenseDetail() {
           </div>
           <div style={styles.amountDate}>
             {new Date(expense.created_at).toLocaleDateString('en-KE', {
-              day: 'numeric', month: 'long', year: 'numeric'
-            })} · {new Date(expense.created_at).toLocaleTimeString('en-KE', {
-              hour: '2-digit', minute: '2-digit'
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            })}{' '}
+            ·{' '}
+            {new Date(expense.created_at).toLocaleTimeString('en-KE', {
+              hour: '2-digit',
+              minute: '2-digit',
             })}
           </div>
         </div>
@@ -59,26 +94,32 @@ function CEOExpenseDetail() {
           <div style={styles.detailRow}>
             <span style={styles.detailLabel}>Expense type</span>
             <span style={styles.detailValue}>
-              {expense.expense_type ?? 'No type'}
+              {expenseTypesMap[expense.expense_type] ?? 'No type'}
             </span>
           </div>
           <div style={styles.detailRow}>
             <span style={styles.detailLabel}>Payment method</span>
-            <span style={{
-              ...styles.badge,
-              ...paymentColor(expense.payment_method)
-            }}>
+            <span
+              style={{
+                ...styles.badge,
+                ...paymentColor(expense.payment_method),
+              }}
+            >
               {expense.payment_method}
             </span>
           </div>
           <div style={styles.detailRow}>
             <span style={styles.detailLabel}>Submitted by</span>
-            <span style={styles.detailValue}>Driver {expense.created_by}</span>
+            <span style={styles.detailValue}>
+              {usersMap[expense.created_by] ?? `User ${expense.created_by}`}
+            </span>
           </div>
           {expense.task && (
             <div style={styles.detailRow}>
               <span style={styles.detailLabel}>Linked task</span>
-              <span style={styles.taskChip}>Task {expense.task}</span>
+              <span style={styles.taskChip}>
+                {tasksMap[expense.task] ?? `Task ${expense.task}`}
+              </span>
             </div>
           )}
           {expense.description && (
@@ -143,7 +184,12 @@ const styles = {
   },
   detailLabel: { fontSize: '12px', color: '#888' },
   detailValue: { fontSize: '13px', fontWeight: '500', color: '#1a1a1a' },
-  badge: { fontSize: '11px', padding: '2px 8px', borderRadius: '20px', fontWeight: '500' },
+  badge: {
+    fontSize: '11px',
+    padding: '2px 8px',
+    borderRadius: '20px',
+    fontWeight: '500',
+  },
   taskChip: {
     fontSize: '12px',
     padding: '3px 10px',

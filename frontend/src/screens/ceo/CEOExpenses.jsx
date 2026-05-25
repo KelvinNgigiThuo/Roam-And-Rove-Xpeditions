@@ -13,20 +13,35 @@ function CEOExpenses() {
   const [filterFrom, setFilterFrom] = useState('')
   const [filterTo, setFilterTo] = useState('')
   const [expenseTypes, setExpenseTypes] = useState([])
-  const [drivers, setDrivers] = useState([])
+  const [expenseTypesMap, setExpenseTypesMap] = useState({})
+  const [users, setUsers] = useState([])
+  const [usersMap, setUsersMap] = useState({})
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [expensesRes, typesRes] = await Promise.all([
+        const [expensesRes, typesRes, usersRes] = await Promise.all([
           api.get('/operations/expenses/'),
           api.get('/operations/expense-types/'),
+          api.get('/users/'),
         ])
+
         setExpenses(expensesRes.data)
         setFiltered(expensesRes.data)
         setExpenseTypes(typesRes.data)
-        const uniqueDrivers = [...new Set(expensesRes.data.map(e => e.created_by))]
-        setDrivers(uniqueDrivers)
+        setUsers(usersRes.data)
+
+        const typesMap = {}
+        typesRes.data.forEach((t) => {
+          typesMap[t.id] = t.name
+        })
+        setExpenseTypesMap(typesMap)
+
+        const uMap = {}
+        usersRes.data.forEach((u) => {
+          uMap[u.id] = u.username
+        })
+        setUsersMap(uMap)
       } catch (err) {
         console.error('Failed to fetch expenses', err)
       } finally {
@@ -38,10 +53,14 @@ function CEOExpenses() {
 
   useEffect(() => {
     let result = expenses
-    if (filterDriver) result = result.filter(e => e.created_by === parseInt(filterDriver))
-    if (filterType) result = result.filter(e => e.expense_type === parseInt(filterType))
-    if (filterFrom) result = result.filter(e => e.created_at.split('T')[0] >= filterFrom)
-    if (filterTo) result = result.filter(e => e.created_at.split('T')[0] <= filterTo)
+    if (filterDriver)
+      result = result.filter((e) => e.created_by === parseInt(filterDriver))
+    if (filterType)
+      result = result.filter((e) => e.expense_type === parseInt(filterType))
+    if (filterFrom)
+      result = result.filter((e) => e.created_at.split('T')[0] >= filterFrom)
+    if (filterTo)
+      result = result.filter((e) => e.created_at.split('T')[0] <= filterTo)
     setFiltered(result)
   }, [filterDriver, filterType, filterFrom, filterTo, expenses])
 
@@ -59,7 +78,7 @@ function CEOExpenses() {
     <div style={styles.container}>
       <div style={styles.header}>
         <span style={styles.headerBrand}>Roam & Rove</span>
-        <span style={styles.headerUser}>All Expenses</span>
+        <span style={styles.headerTitle}>All Expenses</span>
       </div>
 
       <div style={styles.body}>
@@ -83,21 +102,25 @@ function CEOExpenses() {
             <select
               style={styles.select}
               value={filterDriver}
-              onChange={e => setFilterDriver(e.target.value)}
+              onChange={(e) => setFilterDriver(e.target.value)}
             >
               <option value="">All drivers</option>
-              {drivers.map(d => (
-                <option key={d} value={d}>Driver {d}</option>
+              {users.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.username}
+                </option>
               ))}
             </select>
             <select
               style={styles.select}
               value={filterType}
-              onChange={e => setFilterType(e.target.value)}
+              onChange={(e) => setFilterType(e.target.value)}
             >
               <option value="">All types</option>
-              {expenseTypes.map(t => (
-                <option key={t.id} value={t.id}>{t.name}</option>
+              {expenseTypes.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
               ))}
             </select>
           </div>
@@ -106,13 +129,13 @@ function CEOExpenses() {
               style={styles.dateInput}
               type="date"
               value={filterFrom}
-              onChange={e => setFilterFrom(e.target.value)}
+              onChange={(e) => setFilterFrom(e.target.value)}
             />
             <input
               style={styles.dateInput}
               type="date"
               value={filterTo}
-              onChange={e => setFilterTo(e.target.value)}
+              onChange={(e) => setFilterTo(e.target.value)}
             />
           </div>
         </div>
@@ -123,7 +146,7 @@ function CEOExpenses() {
           <div style={styles.empty}>No expenses match your filters</div>
         )}
 
-        {filtered.map(expense => (
+        {filtered.map((expense) => (
           <div
             key={expense.id}
             style={styles.card}
@@ -132,10 +155,12 @@ function CEOExpenses() {
             <div style={styles.cardTop}>
               <div>
                 <div style={styles.expenseType}>
-                  {expense.expense_type ?? 'No type'}
+                  {expenseTypesMap[expense.expense_type] ?? 'No type'}
                 </div>
                 <div style={styles.expenseDriver}>
-                  Driver {expense.created_by} · {expense.created_at.split('T')[0]}
+                  {usersMap[expense.created_by] ?? `User ${expense.created_by}`}
+                  {' · '}
+                  {expense.created_at.split('T')[0]}
                 </div>
               </div>
               <div style={styles.expenseAmount}>
@@ -143,7 +168,12 @@ function CEOExpenses() {
               </div>
             </div>
             <div style={styles.cardBottom}>
-              <span style={{ ...styles.badge, ...paymentColor(expense.payment_method) }}>
+              <span
+                style={{
+                  ...styles.badge,
+                  ...paymentColor(expense.payment_method),
+                }}
+              >
                 {expense.payment_method}
               </span>
             </div>
@@ -169,7 +199,7 @@ const styles = {
     alignItems: 'center',
   },
   headerBrand: { fontSize: '13px', color: '#E1F5EE' },
-  headerUser: { fontSize: '12px', color: '#9FE1CB' },
+  headerTitle: { fontSize: '12px', color: '#9FE1CB' },
   body: { padding: '12px 14px' },
   summaryBar: {
     display: 'flex',
@@ -183,13 +213,24 @@ const styles = {
   summaryLabel: { fontSize: '12px', color: '#888' },
   summaryAmount: { fontSize: '18px', fontWeight: '500', color: '#1a1a1a' },
   summaryCount: { fontSize: '12px', color: '#aaa' },
-    logBtn: {
-      width: '100%', padding: '11px', background: '#1D9E75',
-      color: '#ffffff', border: 'none', borderRadius: '8px',
-      fontSize: '14px', fontWeight: '500', cursor: 'pointer',
-      marginBottom: '12px',
-    },
-  filters: { display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '12px' },
+  logBtn: {
+    width: '100%',
+    padding: '11px',
+    background: '#1D9E75',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    cursor: 'pointer',
+    marginBottom: '12px',
+  },
+  filters: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px',
+    marginBottom: '12px',
+  },
   filterRow: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' },
   select: {
     width: '100%',
@@ -211,7 +252,12 @@ const styles = {
     boxSizing: 'border-box',
   },
   resultsLabel: { fontSize: '12px', color: '#aaa', marginBottom: '8px' },
-  empty: { textAlign: 'center', padding: '32px', color: '#aaa', fontSize: '13px' },
+  empty: {
+    textAlign: 'center',
+    padding: '32px',
+    color: '#aaa',
+    fontSize: '13px',
+  },
   card: {
     background: '#ffffff',
     borderRadius: '8px',
@@ -220,12 +266,22 @@ const styles = {
     cursor: 'pointer',
     border: '1px solid #f0f0f0',
   },
-  cardTop: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' },
+  cardTop: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: '6px',
+  },
   expenseType: { fontSize: '13px', fontWeight: '500', color: '#1a1a1a' },
   expenseDriver: { fontSize: '11px', color: '#aaa', marginTop: '2px' },
   expenseAmount: { fontSize: '15px', fontWeight: '500', color: '#085041' },
   cardBottom: { display: 'flex', justifyContent: 'flex-end' },
-  badge: { fontSize: '11px', padding: '2px 8px', borderRadius: '20px', fontWeight: '500' },
+  badge: {
+    fontSize: '11px',
+    padding: '2px 8px',
+    borderRadius: '20px',
+    fontWeight: '500',
+  },
 }
 
 export default CEOExpenses

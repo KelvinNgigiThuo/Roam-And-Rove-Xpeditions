@@ -10,7 +10,8 @@ function CEOTaskDetail() {
   const [task, setTask] = useState(null)
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState(false)
-  const [drivers, setDrivers] = useState([])
+  const [users, setUsers] = useState([])
+  const [usersMap, setUsersMap] = useState({})
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [assignedTo, setAssignedTo] = useState('')
@@ -23,17 +24,20 @@ function CEOTaskDetail() {
       try {
         const [taskRes, usersRes] = await Promise.all([
           api.get(`/operations/tasks/${id}/`),
-          api.get('/users/me/'),
+          api.get('/users/'),
         ])
+
         setTask(taskRes.data)
         setTitle(taskRes.data.title)
         setDescription(taskRes.data.description)
         setAssignedTo(taskRes.data.assigned_to ?? '')
-        const driversRes = await api.get('/operations/tasks/')
-        const uniqueDrivers = [...new Set(driversRes.data
-          .filter(t => t.assigned_to)
-          .map(t => t.assigned_to))]
-        setDrivers(uniqueDrivers)
+        setUsers(usersRes.data)
+
+        const uMap = {}
+        usersRes.data.forEach((u) => {
+          uMap[u.id] = u.username
+        })
+        setUsersMap(uMap)
       } catch (err) {
         console.error('Failed to fetch task', err)
       } finally {
@@ -90,12 +94,15 @@ function CEOTaskDetail() {
             Edit
           </button>
         )}
-        {!isOwner && <span style={{ width: '40px' }} />}
         {editing && (
-          <button style={styles.editHeaderBtn} onClick={() => setEditing(false)}>
+          <button
+            style={styles.editHeaderBtn}
+            onClick={() => setEditing(false)}
+          >
             Cancel
           </button>
         )}
+        {!isOwner && !editing && <span style={{ width: '40px' }} />}
       </div>
 
       <div style={styles.body}>
@@ -113,14 +120,19 @@ function CEOTaskDetail() {
             <div style={styles.detailCard}>
               <div style={styles.detailRow}>
                 <span style={styles.detailLabel}>Assigned to</span>
-                {task.assigned_to
-                  ? <span style={styles.assignedBadge}>Driver {task.assigned_to}</span>
-                  : <span style={styles.unassignedBadge}>Unassigned</span>
-                }
+                {task.assigned_to ? (
+                  <span style={styles.assignedBadge}>
+                    {usersMap[task.assigned_to] ?? `User ${task.assigned_to}`}
+                  </span>
+                ) : (
+                  <span style={styles.unassignedBadge}>Unassigned</span>
+                )}
               </div>
               <div style={styles.detailRow}>
                 <span style={styles.detailLabel}>Created by</span>
-                <span style={styles.detailValue}>User {task.created_by}</span>
+                <span style={styles.detailValue}>
+                  {usersMap[task.created_by] ?? `User ${task.created_by}`}
+                </span>
               </div>
               {task.description && (
                 <div style={styles.descBlock}>
@@ -132,10 +144,7 @@ function CEOTaskDetail() {
 
             {isOwner && (
               <div style={styles.actions}>
-                <button
-                  style={styles.editBtn}
-                  onClick={() => setEditing(true)}
-                >
+                <button style={styles.editBtn} onClick={() => setEditing(true)}>
                   Edit task
                 </button>
                 <button
@@ -161,7 +170,7 @@ function CEOTaskDetail() {
               <input
                 style={styles.input}
                 value={title}
-                onChange={e => setTitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </div>
             <div style={styles.field}>
@@ -169,7 +178,7 @@ function CEOTaskDetail() {
               <textarea
                 style={styles.textarea}
                 value={description}
-                onChange={e => setDescription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </div>
             <div style={styles.field}>
@@ -177,16 +186,22 @@ function CEOTaskDetail() {
               <select
                 style={styles.input}
                 value={assignedTo}
-                onChange={e => setAssignedTo(e.target.value)}
+                onChange={(e) => setAssignedTo(e.target.value)}
               >
                 <option value="">Unassigned</option>
-                {drivers.map(d => (
-                  <option key={d} value={d}>Driver {d}</option>
-                ))}
+                {users
+                  .filter((u) => u.role === 'DRIVER')
+                  .map((u) => (
+                    <option key={u.id} value={u.id}>
+                      {u.username}
+                    </option>
+                  ))}
               </select>
             </div>
             <button
-              style={saving ? { ...styles.saveBtn, opacity: 0.7 } : styles.saveBtn}
+              style={
+                saving ? { ...styles.saveBtn, opacity: 0.7 } : styles.saveBtn
+              }
               onClick={handleSave}
               disabled={saving}
             >
@@ -195,7 +210,7 @@ function CEOTaskDetail() {
           </>
         )}
 
-        <div style={{ height: '80px' }} />
+        <div style={{ height: '20px' }} />
       </div>
     </div>
   )
@@ -212,84 +227,151 @@ const styles = {
     alignItems: 'center',
   },
   backBtn: {
-    background: 'none', border: 'none',
-    color: '#E1F5EE', fontSize: '14px', cursor: 'pointer', padding: '0',
+    background: 'none',
+    border: 'none',
+    color: '#E1F5EE',
+    fontSize: '14px',
+    cursor: 'pointer',
+    padding: '0',
   },
   headerTitle: { fontSize: '15px', fontWeight: '500', color: '#ffffff' },
   editHeaderBtn: {
-    background: 'none', border: 'none',
-    color: '#E1F5EE', fontSize: '14px', cursor: 'pointer', padding: '0',
+    background: 'none',
+    border: 'none',
+    color: '#E1F5EE',
+    fontSize: '14px',
+    cursor: 'pointer',
+    padding: '0',
   },
   body: { padding: '16px' },
   errorBox: {
-    background: '#fef2f2', border: '1px solid #fecaca',
-    color: '#dc2626', padding: '10px 14px',
-    borderRadius: '8px', fontSize: '13px', marginBottom: '16px',
+    background: '#fef2f2',
+    border: '1px solid #fecaca',
+    color: '#dc2626',
+    padding: '10px 14px',
+    borderRadius: '8px',
+    fontSize: '13px',
+    marginBottom: '16px',
   },
   titleHero: {
     paddingBottom: '14px',
     borderBottom: '1px solid #e0e0e0',
     marginBottom: '16px',
   },
-  taskTitle: { fontSize: '18px', fontWeight: '500', color: '#1a1a1a', marginBottom: '4px' },
+  taskTitle: {
+    fontSize: '18px',
+    fontWeight: '500',
+    color: '#1a1a1a',
+    marginBottom: '4px',
+  },
   taskDate: { fontSize: '12px', color: '#aaa' },
   detailCard: {
-    background: '#ffffff', borderRadius: '8px',
-    padding: '4px 14px', marginBottom: '16px',
+    background: '#ffffff',
+    borderRadius: '8px',
+    padding: '4px 14px',
+    marginBottom: '16px',
   },
   detailRow: {
-    display: 'flex', justifyContent: 'space-between',
-    alignItems: 'center', padding: '11px 0',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '11px 0',
     borderBottom: '1px solid #f0f0f0',
   },
   detailLabel: { fontSize: '12px', color: '#888' },
   detailValue: { fontSize: '13px', fontWeight: '500', color: '#1a1a1a' },
   assignedBadge: {
-    fontSize: '11px', padding: '2px 8px', borderRadius: '20px',
-    background: '#E6F1FB', color: '#0C447C', fontWeight: '500',
+    fontSize: '11px',
+    padding: '2px 8px',
+    borderRadius: '20px',
+    background: '#E6F1FB',
+    color: '#0C447C',
+    fontWeight: '500',
   },
   unassignedBadge: {
-    fontSize: '11px', padding: '2px 8px', borderRadius: '20px',
-    background: '#F1EFE8', color: '#5F5E5A', fontWeight: '500',
+    fontSize: '11px',
+    padding: '2px 8px',
+    borderRadius: '20px',
+    background: '#F1EFE8',
+    color: '#5F5E5A',
+    fontWeight: '500',
   },
   descBlock: { padding: '11px 0' },
-  descText: { fontSize: '13px', color: '#1a1a1a', marginTop: '6px', lineHeight: '1.6' },
+  descText: {
+    fontSize: '13px',
+    color: '#1a1a1a',
+    marginTop: '6px',
+    lineHeight: '1.6',
+  },
   actions: { display: 'flex', flexDirection: 'column', gap: '8px' },
   editBtn: {
-    width: '100%', padding: '11px', background: '#1D9E75',
-    color: '#ffffff', border: 'none', borderRadius: '8px',
-    fontSize: '14px', fontWeight: '500', cursor: 'pointer',
+    width: '100%',
+    padding: '11px',
+    background: '#1D9E75',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    cursor: 'pointer',
   },
   deleteBtn: {
-    width: '100%', padding: '11px', background: '#ffffff',
-    color: '#dc2626', border: '1px solid #fecaca',
-    borderRadius: '8px', fontSize: '14px', fontWeight: '500', cursor: 'pointer',
+    width: '100%',
+    padding: '11px',
+    background: '#ffffff',
+    color: '#dc2626',
+    border: '1px solid #fecaca',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: '500',
+    cursor: 'pointer',
   },
   viewOnlyNote: {
-    textAlign: 'center', fontSize: '12px',
-    color: '#aaa', marginTop: '16px',
+    textAlign: 'center',
+    fontSize: '12px',
+    color: '#aaa',
+    marginTop: '16px',
   },
-  field: { marginBottom: '16px' },
+  field: { marginBottom: '18px' },
   label: {
-    display: 'block', fontSize: '12px', fontWeight: '600',
-    color: '#555', marginBottom: '6px',
-    textTransform: 'uppercase', letterSpacing: '0.04em',
+    display: 'block',
+    fontSize: '12px',
+    fontWeight: '600',
+    color: '#555',
+    marginBottom: '6px',
+    textTransform: 'uppercase',
+    letterSpacing: '0.04em',
   },
   input: {
-    width: '100%', boxSizing: 'border-box',
-    padding: '10px 12px', border: '1px solid #e0e0e0',
-    borderRadius: '8px', fontSize: '14px', color: '#1a1a1a',
+    width: '100%',
+    boxSizing: 'border-box',
+    padding: '10px 12px',
+    border: '1px solid #e0e0e0',
+    borderRadius: '8px',
+    fontSize: '14px',
+    color: '#1a1a1a',
   },
   textarea: {
-    width: '100%', boxSizing: 'border-box',
-    padding: '10px 12px', border: '1px solid #e0e0e0',
-    borderRadius: '8px', fontSize: '14px', color: '#1a1a1a',
-    height: '100px', resize: 'none',
+    width: '100%',
+    boxSizing: 'border-box',
+    padding: '10px 12px',
+    border: '1px solid #e0e0e0',
+    borderRadius: '8px',
+    fontSize: '14px',
+    color: '#1a1a1a',
+    height: '100px',
+    resize: 'none',
   },
   saveBtn: {
-    width: '100%', padding: '12px', background: '#E8A020',
-    color: '#0a0a0a', border: 'none', borderRadius: '8px',
-    fontSize: '15px', fontWeight: '700', cursor: 'pointer',
+    width: '100%',
+    padding: '13px',
+    background: '#E8A020',
+    color: '#0a0a0a',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '15px',
+    fontWeight: '700',
+    cursor: 'pointer',
   },
 }
 
